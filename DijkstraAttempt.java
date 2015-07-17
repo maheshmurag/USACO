@@ -1,4 +1,3 @@
-
 import java.lang.String;
 import java.lang.System;
 import java.util.Arrays;
@@ -9,63 +8,32 @@ public class DijkstraAttempt {
         //based on this graph: https://en.wikipedia.org/wiki/File:Dijkstra_Animation.gif
         int source = 1, goal = 5;
         int[][] grid =
-                {
-                        {0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 7, 9, 0, 0, 14},
-                        {0, 7, 0, 10, 15, 0, 0},
-                        {0, 9, 10, 0, 11, 0, 2},
-                        {0, 0, 15, 11, 0, 6, 0},
-                        {0, 0, 0, 0, 6, 0, 9},
-                        {0, 14, 0, 2, 0, 9, 0},
-                };
-        //<editor-fold desc="comment for old graph">
-        /*LinkedList<Node> graph = new LinkedList<Node>();*/
-        /*graph.add(new Node(0, 0));
-        graph.add(new Node(1, 0));
-        graph.add(new Node(2, 0));
-        graph.add(new Node(3, 0));
-        graph.add(new Node(4, 0));
-        graph.add(new Node(5, 0));
-        graph.add(new Node(6, 0));
-        graph.get(1).adj.add(new Node(6, 14));
-        graph.get(1).adj.add(new Node(3, 9));
-        graph.get(1).adj.add(new Node(2, 7));
-        graph.get(2).adj.add(new Node(3, 10));
-        graph.get(2).adj.add(new Node(4, 15));
-        graph.get(2).adj.add(new Node(6, 14));
-        graph.get(3).adj.add(new Node(6, 2));
-        graph.get(3).adj.add(new Node(4, 11));
-        graph.get(6).adj.add(new Node(5, 9));
-        graph.get(4).adj.add(new Node(5, 6));*/
-
-        /*TreeSet<Node> priQueue = new TreeSet<Node>();
-        priQueue.add(graph.get(source));
-*/
-
-
-        /*for (Node x : graph.get(source).adj)
-            d[x.index] = x.cost;*/
-        /*System.out.print(Arrays.toString(d));
-        System.out.println(Arrays.toString(priQueue.toArray()));
-        */
-        //</editor-fold>
-        int previous[] = new int[7];
-        LinkedList<Integer> S = new LinkedList<Integer>();
-        int d[] = new int[7];
-        Arrays.fill(d, Integer.MAX_VALUE);
+        {
+                {0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 7, 9, 0, 0, 14},
+                {0, 7, 0, 10, 15, 0, 0},
+                {0, 9, 10, 0, 11, 0, 2},
+                {0, 0, 15, 11, 0, 6, 0},
+                {0, 0, 0, 0, 6, 0, 9},
+                {0, 14, 0, 2, 0, 9, 0},
+        };
+        //initializes the graph with adjacency matrix (grid[x][y] = weight of edge between vertex x and vertex y
+        int previous[] = new int[7];//initializes previous array
+        LinkedList<Integer> S = new LinkedList<Integer>();//S array to store vertices whose distance has been calculated
+        int d[] = new int[7];//d array to store vertices distances from source
+        Arrays.fill(d, Integer.MAX_VALUE);//initializes d array with infinity, except for the source vertex
         d[source] = 0;
 
         int indexOfShortest;
-        while (S.size() != 6) {
-            indexOfShortest = goal;
-            for (int i = 1; i < d.length; i++) {
-                if (d[i] < d[indexOfShortest] && !Scontains(S, i)) {
+        while (S.size() != 6) {//when everything has been processed
+            indexOfShortest = goal;//initalize this with a big number, i.e. infinity (since d[goal] = infinity
+            for (int i = 1; i < d.length; i++)//find shortest d that hasnt already been processed (!S.contains(i))
+                if (d[i] < d[indexOfShortest] && !Scontains(S, i))
                     indexOfShortest = i;
-                }
-            }
-            S.add(indexOfShortest);
-            //relax
+            S.add(indexOfShortest);//adds it to S to signify its been processed
+
             for (int i = 1; i < grid[indexOfShortest].length; i++) {
+            //relax:look through neighbors of u, see if you can shorten distance between source and i by going through u
                 if (grid[indexOfShortest][i] != 0 && (d[i] > d[indexOfShortest] + grid[indexOfShortest][i])) {
                     d[i] = d[indexOfShortest] + grid[indexOfShortest][i];
                     previous[i] = indexOfShortest;
