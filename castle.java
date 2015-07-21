@@ -78,7 +78,7 @@ public class castle {
             }
         }
         Arrays.sort(cmps);
-
+ 
 //        printArr(comps);
 //        System.out.println(c);
 //        System.out.println(cmps[cmps.length - 1]);
