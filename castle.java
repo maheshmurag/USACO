@@ -12,12 +12,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
+import java.lang.Comparable;
 import java.lang.Integer;
 import java.lang.System;
+import java.util.*;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class castle {
     static int M, N;
@@ -26,7 +29,7 @@ public class castle {
     static int[] cmps;
     static boolean[][] visited;
     static int highestcomp = 0;
-    static int c = 1;
+    static int c = 0;
     static int maxcomp = 0;
     static int maxcompx = 0;
     static int maxcompy = 0;
@@ -35,6 +38,7 @@ public class castle {
     static String[] dirstr = {"N", "E", "S", "W"};
 
     //                      N       E         S        W
+    static ArrayList<Thing> optimals = new ArrayList<Thing>();
     public static void main(String[] args) throws java.io.IOException {
         String prob = "castle";
         StreamTokenizer input = new StreamTokenizer(new BufferedReader(new FileReader(prob + ".in")));
@@ -56,12 +60,9 @@ public class castle {
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[0].length; j++) {
                 if (comps[i][j] == 0) {
-                    int tmp = dfs(i, j, c);
-                    if (tmp != 0)
-                        c++;
-                    else
-                        comps[i][j] = c + 1;
-
+                    c++;
+                    comps[i][j] = c;
+                    dfs(i, j, c);
                 }
                 cmps[comps[i][j]]++;
             }
@@ -72,23 +73,31 @@ public class castle {
 //                dfs(i, j, comps[i][j]);
 //            }
 //        }
-        for (int i = 0; i<arr.length; i++) {
-            for (int j = arr[0].length-1; j >= 0; j--) {
+        for (int i = 0; i < arr.length; i++) {
+//            for (int j = arr[0].length - 1; j >= 0; j--) {
+            for (int j = 0; j < arr[0].length; j++) {
                 dfs(i, j, comps[i][j]);
             }
         }
         Arrays.sort(cmps);
- 
-//        printArr(comps);
-//        System.out.println(c);
-//        System.out.println(cmps[cmps.length - 1]);
-//        System.out.println(maxcomp);
-//        System.out.println(maxcompx + " " + maxcompy + " " + dirstr[maxcompdir]);
+        Thing[] optimalsArr = new Thing[optimals.size()];
+        optimalsArr = optimals.toArray(optimalsArr);
+
+        Arrays.sort(optimalsArr);
+        System.out.println(optimalsArr[optimalsArr.length - 1]);
+        Thing best = optimalsArr[optimalsArr.length-1];
+        System.out.println("Comps array: ");
+        printArr(comps);
+        System.out.println();
+        System.out.println(c);
+        System.out.println(cmps[cmps.length - 1]);
+        System.out.println(maxcomp);
+        System.out.println(best.i + " " + best.j + " " + dirstr[best.dir]);
 
         output.println(c);
         output.println(cmps[cmps.length - 1]);
-        output.println(maxcomp);
-        output.println(maxcompx + " " + maxcompy + " " + dirstr[maxcompdir]);
+        output.println(best.score);
+        output.println(best.i + " " + best.j + " " + dirstr[best.dir]);
 
 
         output.close();
@@ -106,24 +115,11 @@ public class castle {
                     comps[tmpx][tmpy] = comp;
                     dfs(tmpx, tmpy, comp);
                 } else if (a(arr[i][j], x)) {
-                    boolean b = true;
                     if (comps[tmpx][tmpy] != comps[i][j] && (cmps[comps[tmpx][tmpy]] + cmps[comp] >= maxcomp)) {
-//                        if ((cmps[comps[tmpx][tmpy]] + cmps[comp] == maxcomp)) {
-//                            if (!(tmpx < maxcompx)) {
-//                                b = false;
-//                            } else if (!(tmpx == maxcompx && tmpy > maxcompy)) {
-//                                b = false;
-//                            }
-//                        }
-//                        if(b) {
-//                            maxcomp = cmps[comps[tmpx][tmpy]] + cmps[comp];
-//                            maxcompx = tmpx;
-//                            maxcompy = tmpy;
-//                            maxcompdir = x;
-//                        }
+                        optimals.add(new Thing(i+1, j+1, cmps[comps[tmpx][tmpy]] + cmps[comp], x));
                         maxcomp = cmps[comps[tmpx][tmpy]] + cmps[comp];
-                        maxcompx = i+1;
-                        maxcompy = j+1;
+                        maxcompx = i + 1;
+                        maxcompy = j + 1;
                         maxcompdir = x;
                     }
                 }
@@ -146,10 +142,40 @@ public class castle {
 //        }
     }
 
+    static class Thing implements Comparable<Thing> {
+        int i, j, score, dir;
+        public Thing(int x, int y, int s, int d){
+            i = x;
+            j = y;
+            score = s;
+            dir = d;
+        }
+
+        public int compareTo(Thing o2) {
+            if(this.score == o2.score){
+                if(this.j == o2.j){
+                    if(this.i == o2.i){
+//                        if(o1.dir == o2.dir){
+//                            return 0;
+//                        }
+//                        else
+                        return o2.dir - this.dir;
+                    }
+                    else return this.i - o2.i;
+                }
+                else return o2.j - this.j;
+            }
+            else return this.score - o2.score;
+        }
+
+        public String toString(){
+            return "("+i+","+j+"). score: " + score + ". dir: " + dir;
+        }
+    }
+
     public static boolean withinBounds(int x, int y) {
         return ((x < N && x >= 0) && (y < M && y >= 0));
     }
-
 
     public static void printArr(int[][] arr) {
         for (int i = 0; i < arr.length; i++) {
