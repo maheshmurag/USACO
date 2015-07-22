@@ -4,12 +4,11 @@ LANG: JAVA
 ID: maheshm2
  */
 
-import java.io.*;
-import java.lang.Integer;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 
@@ -17,6 +16,7 @@ public class holstein {
     static int V, G;
     static int[] vits;
     static int[][] feeds;
+    static String str;
 
     public static void main(String[] args) throws java.io.IOException {
         String prob = "holstein";
@@ -34,26 +34,19 @@ public class holstein {
             for (int j = 0; j < V; j++)
                 feeds[i][j] = input.nextInt();
         int[] vit = new int[V];
-        ArrayList<Integer> ret1a = dfs(vit, true, 0, new ArrayList<>());
-        ArrayList<Integer> ret2a = dfs(vit, false, 0, new ArrayList<>());
-        Integer[] ret1 = new Integer[ret1a.size()];
-        Integer[] ret2 = new Integer[ret2a.size()];
-        ret1a.toArray(ret1);
-        ret2a.toArray(ret2);
-
+        dfs(vit, true, 0, "");
+        dfs(vit, false, 0, "");
 //        System.out.println("answer:  " + Arrays.toString(dfs(vit, true, 0, new ArrayList<>()).toArray()));
 //        System.out.println("answer:  " + Arrays.toString(dfs(vit, false, 0, new ArrayList<>()).toArray()));
-        Integer[] out = ret1.length < ret2.length ? ret1 : ret2;
-        System.out.print(out.length + " ");
-        for (int i = 0; i < out.length; i++) System.out.print((out[i]+1) + " ");
-        System.out.println();
-        output.println();
+//        String out = ret1a.length() < ret2a.length() ? ret1a : ret2a;
+        output.print(countStr(str));
+        output.println(str);
         output.close();
 
     }
 
-    public static ArrayList<Integer> dfs(int[] arr, boolean enable, int index, ArrayList<Integer> x) {
-        System.out.println(index+":"+Arrays.toString(arr)+":"+Arrays.toString(x.toArray()));
+    public static void dfs(int[] arr, boolean enable, int index, String x) {
+//        System.out.println(index + ":" + Arrays.toString(arr) + ":" + x);
         boolean t = true;
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] < vits[i]) {
@@ -65,36 +58,30 @@ public class holstein {
 //            if (t)
 //                System.out.println("printing at 55: " + Arrays.toString(arr) + " with x: " + Arrays.toString(x.toArray()));
 //            if (index == G) System.out.println("printing at 56: met limit before getting to fill vitamins");
-            return x;
+            if (t && countStr(x) < countStr(str) && countStr(x) != 0) str = x;
+            return;
         }
+        String newStr = "" + x;
         int[] newarr = Arrays.copyOf(arr, arr.length);
-        ArrayList<Integer> newList = new ArrayList<>();
-        for (int i = 0; i < x.size(); i++)
-            newList.add(x.get(i).intValue());
-
         if (enable) {
-            newList.add(index);
-            for (int i = 0; i < arr.length; i++)
+            newStr += " " + (index+1);
+            for (int i = 0; i < newarr.length; i++)
                 newarr[i] += feeds[index][i];
         }
 //        System.out.println("dfs with: " + Arrays.toString(arr) + ". newarr:" + Arrays.toString(newarr) + ":" + enable + ":" + index + ":" + Arrays.toString(x.toArray()));
-        ArrayList<Integer> o = dfs(newarr, true, index + 1, newList);
-        ArrayList<Integer> p = dfs(newarr, false, index + 1, newList);
+        dfs(newarr, true, index + 1, newStr);
+        dfs(newarr, false, index + 1, newStr);
+    }
 
-        if (o.size() == 0) {
-            if (p.size() == 0)
-                System.out.print("");
-//                System.out.println("this is retarded: both are 0");
-            else return p;
-        } else if (p.size() == 0) {
-            if (o.size() == 0)
-                System.out.print("");
-//                System.out.println("this is retarded: both are 0");
-            else return o;
+    public static int countStr(String s) {
+        if (s == null || s.length() == 0) return Integer.MAX_VALUE;
+        int ret = 0;
+        Scanner sc = new Scanner(s);
+        while (sc.hasNextInt()) {
+            sc.nextInt();
+            ret++;
         }
-//        System.out.println("pring at 84: " + Arrays.toString(o.toArray()) + ":" + Arrays.toString(p.toArray()));
-        return (o.size() < p.size() ? o : p);
-
+        return ret;
     }
 
     static class Vitamin {
