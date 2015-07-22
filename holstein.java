@@ -5,8 +5,11 @@ ID: maheshm2
  */
 
 import java.io.*;
+import java.lang.Integer;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -30,17 +33,27 @@ public class holstein {
         for (int i = 0; i < G; i++)
             for (int j = 0; j < V; j++)
                 feeds[i][j] = input.nextInt();
-
         int[] vit = new int[V];
-//        int counter = Math.max(dfs(vit, true, 0, 1), dfs(vit, false, 0, 0));
-        System.out.println(dfs(vit, true, 0, 1));
-        System.out.println(dfs(vit, false, 0, 1));
+        ArrayList<Integer> ret1a = dfs(vit, true, 0, new ArrayList<>());
+        ArrayList<Integer> ret2a = dfs(vit, false, 0, new ArrayList<>());
+        Integer[] ret1 = new Integer[ret1a.size()];
+        Integer[] ret2 = new Integer[ret2a.size()];
+        ret1a.toArray(ret1);
+        ret2a.toArray(ret2);
+
+//        System.out.println("answer:  " + Arrays.toString(dfs(vit, true, 0, new ArrayList<>()).toArray()));
+//        System.out.println("answer:  " + Arrays.toString(dfs(vit, false, 0, new ArrayList<>()).toArray()));
+        Integer[] out = ret1.length < ret2.length ? ret1 : ret2;
+        System.out.print(out.length + " ");
+        for (int i = 0; i < out.length; i++) System.out.print((out[i]+1) + " ");
+        System.out.println();
         output.println();
         output.close();
 
     }
 
-    public static intb dfs(int[] arr, boolean enable, int index, int count) {
+    public static ArrayList<Integer> dfs(int[] arr, boolean enable, int index, ArrayList<Integer> x) {
+        System.out.println(index+":"+Arrays.toString(arr)+":"+Arrays.toString(x.toArray()));
         boolean t = true;
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] < vits[i]) {
@@ -48,18 +61,39 @@ public class holstein {
                 break;
             }
         }
-        if (t) {
-            System.out.println(Arrays.toString(arr));
-            return 0;
+        if (t || index == G) {
+//            if (t)
+//                System.out.println("printing at 55: " + Arrays.toString(arr) + " with x: " + Arrays.toString(x.toArray()));
+//            if (index == G) System.out.println("printing at 56: met limit before getting to fill vitamins");
+            return x;
         }
-        if(index==G)
-            return 0;
         int[] newarr = Arrays.copyOf(arr, arr.length);
-        if (enable)
+        ArrayList<Integer> newList = new ArrayList<>();
+        for (int i = 0; i < x.size(); i++)
+            newList.add(x.get(i).intValue());
+
+        if (enable) {
+            newList.add(index);
             for (int i = 0; i < arr.length; i++)
                 newarr[i] += feeds[index][i];
-//        System.out.println("dfs with: " + Arrays.toString(arr) + ". newarr:" + Arrays.toString(newarr) + ":" + enable + ":" + index + ":" + count);
-        return count+Math.min(dfs(newarr, true, index+1, (enable?1:0)), dfs(newarr, false, index+1, (enable?1:0)));
+        }
+//        System.out.println("dfs with: " + Arrays.toString(arr) + ". newarr:" + Arrays.toString(newarr) + ":" + enable + ":" + index + ":" + Arrays.toString(x.toArray()));
+        ArrayList<Integer> o = dfs(newarr, true, index + 1, newList);
+        ArrayList<Integer> p = dfs(newarr, false, index + 1, newList);
+
+        if (o.size() == 0) {
+            if (p.size() == 0)
+                System.out.print("");
+//                System.out.println("this is retarded: both are 0");
+            else return p;
+        } else if (p.size() == 0) {
+            if (o.size() == 0)
+                System.out.print("");
+//                System.out.println("this is retarded: both are 0");
+            else return o;
+        }
+//        System.out.println("pring at 84: " + Arrays.toString(o.toArray()) + ":" + Arrays.toString(p.toArray()));
+        return (o.size() < p.size() ? o : p);
 
     }
 
