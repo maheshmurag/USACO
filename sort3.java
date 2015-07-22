@@ -8,13 +8,12 @@ import java.io.*;
 import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+//loops through all non-duplicate list pairs, if swapping puts both in the right place, do the swap
+//then, loops through list length, counts number of misplaced things, and adds 2*misplaced/3 to the counter
+//^because it takes 2 swaps to fix 3 out-of-place elements i.e. c,a,b -> a,c,b -> a,b,c
 public class sort3 {
-    static int n;
     static int arr[];
-    static int carr[];
-    static int counter = 0, min;
-    static int a, b, c;
+    static int n, a, b, c, counter;
 
     public static void main(String[] args) throws java.io.IOException {
         String prob = "sort3";
@@ -46,47 +45,12 @@ public class sort3 {
                 }
             }
         }
-//        System.out.println(Arrays.toString(arr) + ":" + counter);
         int c = 0;
         for (int i = 0; i < arr.length; i++)
             if (!inPlace(arr[i], i))
                 c++;
         counter += 2 * (c / 3);
         output.println(counter);
-
-
-//        min = Integer.MAX_VALUE;
-//        ArrayList<Integer> condensed = new ArrayList<Integer>();
-//
-//
-//        for (int i = 0; i < arr.length; i += 0) {
-//            if (arr[i] < min)
-//                min = arr[i];
-//            condensed.add(arr[i++]);
-//            while (i < arr.length && arr[i] == arr[i - 1])
-//                i++;
-//        }
-////        System.out.println(Arrays.toString(condensed.toArray()));
-//        carr = new int[condensed.size()];
-//        for (int i = 0; i < condensed.size(); i++)
-//            carr[i] = condensed.get(i);
-//        int start = 0, imin, tmp;
-//        while (!isSorted(carr)) {
-//            if (arr[start] != min) {
-//                //do swap
-//                imin = iMin(start);
-//                if(imin==-1) {
-//                    System.out.println("failure: " + Arrays.toString(carr));
-//                    break;
-//                }
-//                tmp = arr[start];
-//                arr[start] = arr[imin];
-//                arr[imin] = tmp;
-//                counter++;
-//            }
-//            start++;
-//        }
-//        System.out.println(counter);
         output.close();
     }
 
@@ -106,27 +70,5 @@ public class sort3 {
                 return index >= a + b;
         }
         return false;
-    }
-
-
-    public static int iMin(int s) {
-        int m = 4, im = -1;
-        for (int i = s; i < carr.length; i++) {
-            if (carr[i] == min)
-                return i;
-            if (carr[i] < m) {
-                m = carr[i];
-                im = i;
-            }
-        }
-        return im;
-    }
-
-    public static boolean isSorted(int[] a) {
-        if (a.length < 2) return true;
-        for (int i = 1; i < a.length; i++)
-            if (a[i] < a[i - 1])
-                return false;
-        return true;
     }
 }
