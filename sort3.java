@@ -1,5 +1,5 @@
 /*
-TASK: numtri
+TASK: sort3
 LANG: JAVA
 ID: maheshm2
  */
@@ -13,7 +13,8 @@ public class sort3 {
     static int n;
     static int arr[];
     static int carr[];
-    static int counter = 0,min;
+    static int counter = 0, min;
+    static int a, b, c;
 
     public static void main(String[] args) throws java.io.IOException {
         String prob = "sort3";
@@ -26,41 +27,87 @@ public class sort3 {
             input.nextToken();
             arr[i] = (int) input.nval;
         }
-        min = Integer.MAX_VALUE;
-        ArrayList<Integer> condensed = new ArrayList<Integer>();
-
-
-        for (int i = 0; i < arr.length; i += 0) {
-            if (arr[i] < min)
-                min = arr[i];
-            condensed.add(arr[i++]);
-            while (i < arr.length && arr[i] == arr[i - 1])
-                i++;
-        }
-//        System.out.println(Arrays.toString(condensed.toArray()));
-        carr = new int[condensed.size()];
-        for (int i = 0; i < condensed.size(); i++)
-            carr[i] = condensed.get(i);
-        int start = 0, imin, tmp;
-        while (!isSorted(carr)) {
-            if (arr[start] != min) {
-                //do swap
-                imin = iMin(start);
-                if(imin==-1) {
-                    System.out.println("failure: " + Arrays.toString(carr));
-                    break;
+        int[] sorted = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(sorted);
+        a = 0;
+        while (a < sorted.length && sorted[a] == 1) a++;
+        b = a;//a, b, c are starting regions of 1,2,3 respectively
+        while (b < sorted.length && sorted[b] == 2) b++;
+        b -= a;
+        c = sorted.length - b - a;
+        int x, y;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                x = arr[i];
+                y = arr[j];
+                if (x != y && inPlace(x, j) && inPlace(y, i)) {
+                    swap(i, j);
+                    counter++;
                 }
-                tmp = arr[start];
-                arr[start] = arr[imin];
-                arr[imin] = tmp;
-                counter++;
             }
-            start++;
         }
-        System.out.println(counter);
-        output.println();
+//        System.out.println(Arrays.toString(arr) + ":" + counter);
+        int c = 0;
+        for (int i = 0; i < arr.length; i++)
+            if (!inPlace(arr[i], i))
+                c++;
+        counter += 2 * (c / 3);
+        output.println(counter);
+
+
+//        min = Integer.MAX_VALUE;
+//        ArrayList<Integer> condensed = new ArrayList<Integer>();
+//
+//
+//        for (int i = 0; i < arr.length; i += 0) {
+//            if (arr[i] < min)
+//                min = arr[i];
+//            condensed.add(arr[i++]);
+//            while (i < arr.length && arr[i] == arr[i - 1])
+//                i++;
+//        }
+////        System.out.println(Arrays.toString(condensed.toArray()));
+//        carr = new int[condensed.size()];
+//        for (int i = 0; i < condensed.size(); i++)
+//            carr[i] = condensed.get(i);
+//        int start = 0, imin, tmp;
+//        while (!isSorted(carr)) {
+//            if (arr[start] != min) {
+//                //do swap
+//                imin = iMin(start);
+//                if(imin==-1) {
+//                    System.out.println("failure: " + Arrays.toString(carr));
+//                    break;
+//                }
+//                tmp = arr[start];
+//                arr[start] = arr[imin];
+//                arr[imin] = tmp;
+//                counter++;
+//            }
+//            start++;
+//        }
+//        System.out.println(counter);
         output.close();
     }
+
+    public static void swap(int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+
+    public static boolean inPlace(int val, int index) {
+        switch (val) {
+            case 1:
+                return index < a;
+            case 2:
+                return index >= a && index < a + b;
+            case 3:
+                return index >= a + b;
+        }
+        return false;
+    }
+
 
     public static int iMin(int s) {
         int m = 4, im = -1;
