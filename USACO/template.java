@@ -1,5 +1,3 @@
-//template for USACO training
-//replace all 'template' with 'problem name'
 /*
 TASK: template
 LANG: JAVA
