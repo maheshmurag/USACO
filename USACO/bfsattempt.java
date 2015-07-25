@@ -42,7 +42,6 @@ public class bfsattempt {
         while (!queue.isEmpty()) {
             Node top = queue.getFirst();
             queue.removeFirst();
-
             if (top.index == 11) {
                 int x = 11;
                 String str = "";
