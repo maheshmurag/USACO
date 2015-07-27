@@ -43,10 +43,10 @@ public class piggyback {
         n = (int) input.nval;//which field the barn is in
         input.nextToken();
         m = (int) input.nval;//num total connections
-        connections = new int[n + 1][n + 1];
+        connections = new int[n+1][n+1];
         int x, y;
 
-        d = new int[n + 1][n + 1];
+        d = new int[4][n + 1];
 
         visited = new boolean[n + 1];
         previous = new int[n + 1];
@@ -55,9 +55,15 @@ public class piggyback {
         for (int i = 0; i < connections.length; i++) {
             for (int j = 0; j < connections[0].length; j++) {
                 connections[i][j] = 0;
+
+            }
+        }
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < n+1; j++) {
                 d[i][j] = -1;
             }
         }
+
         for (int i = 0; i < m; i++) {
             input.nextToken();
             x = (int) input.nval;
@@ -69,13 +75,10 @@ public class piggyback {
         bfs2(1);
         bfs2(2);
         bfs2(n);
-
         int tmp = 0, min = Integer.MAX_VALUE;
         for (int i = 3; i < n; i++) {
-            tmp = d[1][i] * b + d[2][i] * e + d[n][i] * p;
-//            !(d[1][i] <= 0 || d[2][i] <= 0 || d[n][i] <= 0) &&
-
-            if (tmp < min)
+            tmp = d[1][i] * b + d[2][i] * e + d[3][i] * p;
+            if (!(d[1][i] <= 0 || d[2][i] <= 0 || d[3][i] <= 0) && tmp < min)
             {
                 min = tmp;
                 System.out.println("tmp: " + tmp + " for i: " + i);
@@ -107,7 +110,7 @@ public class piggyback {
         while (!queue.isEmpty()) {
             int top = queue.getFirst().intValue();
             queue.removeFirst();
-            for (int i = 1; i < connections[top].length; i++) {
+            for (int i = 3; i < n; i++) {
                 int a = connections[top][i];
                 if (a != 0) {
                     if (!visited[i] && source!=i) {
@@ -119,9 +122,9 @@ public class piggyback {
                             counter++;
                             bfs2tmp = previous[bfs2tmp];
                         }
-                        if (d[source][i] == -1) {
-                            d[source][i] = counter;
-                            d[i][source] = counter;
+                        if (d[(source==n?3:source)][i] == -1) {
+                            d[(source==n?3:source)][i] = counter;
+//                            d[i][source] = counter;
 //                            System.out.println("Distance from " + source + " to "+i+" is " + counter +". " + Arrays.toString(previous)+ ". top is " + top);//+":"+Arrays.deepToString(d));
                         }
                     }
