@@ -66,98 +66,38 @@ public class piggyback {
             connections[x][y] = 1;
             connections[y][x] = 1;
         }
-//        int[][] d = new int[3][n + 1];//0=1,1=2,2=n
-        for (int i = 3; i < n; i++) {
-//            d[0][i] = bfs(1, i);
-//            d[1][i] = bfs(2, i);
-//            d[2][i] = bfs(n, i);
-            System.out.println("1fdsa: " + i);
-            if(d[1][i] == -1)bfs(1, i);
-            if(d[2][i] == -1)bfs(2, i);
-            if(d[n][i] == -1)bfs(n, i);
-//            bfs(1, i);
-//            bfs(2, i);
-//            bfs(n, i);
+        bfs2(1);
+        bfs2(2);
+        bfs2(n);
 
-        }
         int tmp = 0, min = Integer.MAX_VALUE;
         for (int i = 3; i < n; i++) {
-            tmp = d[0][i] * b + d[1][i] * e + d[2][i] * p;
-            if (tmp < min && tmp > 0)
+            tmp = d[1][i] * b + d[2][i] * e + d[n][i] * p;
+//            !(d[1][i] <= 0 || d[2][i] <= 0 || d[n][i] <= 0) &&
+
+            if (tmp < min)
+            {
                 min = tmp;
+                System.out.println("tmp: " + tmp + " for i: " + i);
+            }
         }
-        System.out.println(min);
-        System.out.println();
+        System.out.println("min: " + min);
+//        System.out.println("___________________________________");
 //        print2Arr(d);
         output.println(min);
         output.close();
     }
 
-    static void print2Arr(int[][] arrrr){
+    static void print2Arr(int[][] arrrr) {
         for (int i = 0; i < arrrr.length; i++) {
             for (int j = 0; j < arrrr.length; j++) {
-                if(arrrr[i][j]>0)System.out.print(arrrr[i][j]);
+                if (arrrr[i][j] >= 0) System.out.print(arrrr[i][j] + " ");
+                else System.out.print("");
             }
             System.out.println();
         }
     }
 
-    static int bfs(int source, int goal) {
-        queue.clear();
-        Arrays.fill(visited, false);
-        Arrays.fill(previous, 0);
-        queue.push(source);
-        int count = 0;
-        while (!queue.isEmpty()) {
-            int top = queue.getFirst().intValue();
-            queue.removeFirst();
-            if (top == goal) {
-                int x = goal;
-                while (x != source) {
-                    count++;
-                    x = previous[x];
-                }
-                d[goal][source] = count;
-                d[source][goal] = count;
-
-                return count;
-            }
-            for (int i = 1; i < connections[top].length; i++) {
-                int a = connections[top][i];
-                if (a != 0) {
-                    if (!visited[i]) {
-                        if ((d[source][i] == -1)) {
-//                            System.out.println("unknown " + source + ":" + i);
-                            queue.add(i);
-                            visited[i] = true;
-                            previous[i] = top;
-
-                            int thing = i, counter = 0;
-                            while (thing != source) {
-                                counter++;
-                                thing = previous[thing];
-                            }
-                            d[source][i] = counter;
-                            d[i][source] = counter;
-
-                        }
-//                        else {
-////                            System.out.println("known " + source + ":" + i);
-//                            int thing = i, counter = 0;
-//                            while (thing != source) {
-//                                counter++;
-//                                thing = previous[thing];
-//                            }
-//                            d[source][i] = count;
-//                            d[i][source] = count;
-//                        }
-                    }
-                }
-            }
-        }
-
-        return -1;
-    }
     static int bfs2(int source) {
         queue.clear();
         Arrays.fill(visited, false);
@@ -167,21 +107,23 @@ public class piggyback {
         while (!queue.isEmpty()) {
             int top = queue.getFirst().intValue();
             queue.removeFirst();
-            if (top == goal) {
-                int x = goal;
-                while (x != source) {
-                    count++;
-                    x = previous[x];
-                }
-                return count;
-            }
             for (int i = 1; i < connections[top].length; i++) {
                 int a = connections[top][i];
                 if (a != 0) {
-                    if (!visited[i]) {
+                    if (!visited[i] && source!=i) {
                         queue.add(i);
                         visited[i] = true;
                         previous[i] = top;
+                        int bfs2tmp = i, counter = 0;
+                        while (bfs2tmp != source) {
+                            counter++;
+                            bfs2tmp = previous[bfs2tmp];
+                        }
+                        if (d[source][i] == -1) {
+                            d[source][i] = counter;
+                            d[i][source] = counter;
+//                            System.out.println("Distance from " + source + " to "+i+" is " + counter +". " + Arrays.toString(previous)+ ". top is " + top);//+":"+Arrays.deepToString(d));
+                        }
                     }
                 }
             }
