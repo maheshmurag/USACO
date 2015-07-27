@@ -58,7 +58,6 @@ public class piggyback {
                 d[i][j] = -1;
             }
         }
-
         for (int i = 0; i < m; i++) {
             input.nextToken();
             x = (int) input.nval;
@@ -74,20 +73,33 @@ public class piggyback {
 //            d[2][i] = bfs(n, i);
             System.out.println("1fdsa: " + i);
             if(d[1][i] == -1)bfs(1, i);
-            System.out.println("2fdsa: " + i);
             if(d[2][i] == -1)bfs(2, i);
-            System.out.println("3fdsa: " + i);
             if(d[n][i] == -1)bfs(n, i);
+//            bfs(1, i);
+//            bfs(2, i);
+//            bfs(n, i);
 
         }
         int tmp = 0, min = Integer.MAX_VALUE;
         for (int i = 3; i < n; i++) {
             tmp = d[0][i] * b + d[1][i] * e + d[2][i] * p;
-            if (tmp < min)
+            if (tmp < min && tmp > 0)
                 min = tmp;
         }
+        System.out.println(min);
+        System.out.println();
+//        print2Arr(d);
         output.println(min);
         output.close();
+    }
+
+    static void print2Arr(int[][] arrrr){
+        for (int i = 0; i < arrrr.length; i++) {
+            for (int j = 0; j < arrrr.length; j++) {
+                if(arrrr[i][j]>0)System.out.print(arrrr[i][j]);
+            }
+            System.out.println();
+        }
     }
 
     static int bfs(int source, int goal) {
@@ -119,16 +131,26 @@ public class piggyback {
                             queue.add(i);
                             visited[i] = true;
                             previous[i] = top;
-                        } else {
-//                            System.out.println("known " + source + ":" + i);
+
                             int thing = i, counter = 0;
                             while (thing != source) {
                                 counter++;
                                 thing = previous[thing];
                             }
-                            d[source][i] = count;
-                            d[i][source] = count;
+                            d[source][i] = counter;
+                            d[i][source] = counter;
+
                         }
+//                        else {
+////                            System.out.println("known " + source + ":" + i);
+//                            int thing = i, counter = 0;
+//                            while (thing != source) {
+//                                counter++;
+//                                thing = previous[thing];
+//                            }
+//                            d[source][i] = count;
+//                            d[i][source] = count;
+//                        }
                     }
                 }
             }
@@ -136,7 +158,37 @@ public class piggyback {
 
         return -1;
     }
+    static int bfs2(int source) {
+        queue.clear();
+        Arrays.fill(visited, false);
+        Arrays.fill(previous, 0);
+        queue.push(source);
+        int count = 0;
+        while (!queue.isEmpty()) {
+            int top = queue.getFirst().intValue();
+            queue.removeFirst();
+            if (top == goal) {
+                int x = goal;
+                while (x != source) {
+                    count++;
+                    x = previous[x];
+                }
+                return count;
+            }
+            for (int i = 1; i < connections[top].length; i++) {
+                int a = connections[top][i];
+                if (a != 0) {
+                    if (!visited[i]) {
+                        queue.add(i);
+                        visited[i] = true;
+                        previous[i] = top;
+                    }
+                }
+            }
+        }
 
+        return -1;
+    }
 
 }
 
