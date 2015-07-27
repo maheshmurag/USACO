@@ -1,5 +1,7 @@
 import java.io.*;
+import java.lang.Boolean;
 import java.lang.Integer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -21,7 +23,8 @@ along the way in the bfs to find the distance from node 5 for example, you also 
  */
 public class piggyback {
     static int b, e, p, n, m;
-    static int[][] connections;
+    static boolean[][] connections;
+    static ArrayList<ArrayList<Boolean>> connections;
     static LinkedList<Integer> queue;
 
     static boolean[] visited;
@@ -43,7 +46,8 @@ public class piggyback {
         n = (int) input.nval;//which field the barn is in
         input.nextToken();
         m = (int) input.nval;//num total connections
-        connections = new int[n+1][n+1];
+
+        connections = new boolean[n+1][n+1];
         int x, y;
 
         d = new int[4][n + 1];
@@ -52,12 +56,6 @@ public class piggyback {
         previous = new int[n + 1];
         queue = new LinkedList<Integer>();
 
-        for (int i = 0; i < connections.length; i++) {
-            for (int j = 0; j < connections[0].length; j++) {
-                connections[i][j] = 0;
-
-            }
-        }
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < n+1; j++) {
                 d[i][j] = -1;
@@ -69,8 +67,8 @@ public class piggyback {
             x = (int) input.nval;
             input.nextToken();
             y = (int) input.nval;
-            connections[x][y] = 1;
-            connections[y][x] = 1;
+            connections[x][y] = true;
+            connections[y][x] = true;
         }
         bfs2(1);
         bfs2(2);
@@ -111,8 +109,8 @@ public class piggyback {
             int top = queue.getFirst().intValue();
             queue.removeFirst();
             for (int i = 3; i < n; i++) {
-                int a = connections[top][i];
-                if (a != 0) {
+                boolean a = connections[top][i];
+                if (a) {
                     if (!visited[i] && source!=i) {
                         queue.add(i);
                         visited[i] = true;
