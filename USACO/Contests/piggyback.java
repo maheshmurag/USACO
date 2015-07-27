@@ -1,6 +1,7 @@
 import java.io.*;
 import java.lang.Boolean;
 import java.lang.Integer;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -24,7 +25,6 @@ along the way in the bfs to find the distance from node 5 for example, you also 
 public class piggyback {
     static int b, e, p, n, m;
     static boolean[][] connections;
-    static ArrayList<ArrayList<Boolean>> connections;
     static LinkedList<Integer> queue;
 
     static boolean[] visited;
