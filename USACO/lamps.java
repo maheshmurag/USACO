@@ -9,7 +9,7 @@ import java.lang.Integer;
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+//tries 2^16 possibilities using recursion (dfs) - d(index, true) d(index, false), d(index+1, true) d(index+1, false), etc
 public class lamps {
     static ArrayList<String> out = new ArrayList<String>();
     static ArrayList<Integer> finOn;
