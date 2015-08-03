@@ -10,7 +10,7 @@ import java.lang.Comparable;
 import java.lang.Integer;
 import java.util.Arrays;
 import java.util.LinkedList;
-
+//cowroute has next(), print 2d array, object, comparator, and dijkstra
 
 public class cowroute {
     static StreamTokenizer input;
