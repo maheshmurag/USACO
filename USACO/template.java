@@ -17,5 +17,9 @@ public class template {
         output.close();
 
     }
+    static int next() throws IOException {
+        input.nextToken();
+        return (int) input.nval;
+    }
 }
 
