@@ -3,22 +3,10 @@ TASK: prefix
 LANG: JAVA
 ID: maheshm2
  */
-
 import java.io.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.StreamTokenizer;
 import java.lang.StringBuilder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.StringTokenizer;
-
+import java.util.*;
 public class prefix {
-    static StreamTokenizer input;
-
     public static void main(String[] args) throws java.io.IOException {
         String prob = "prefix";
         PrintWriter output=new PrintWriter(new FileWriter(prob+".out"));
@@ -28,9 +16,8 @@ public class prefix {
         String line = bf.readLine();
         while (!line.equals(".")) {
             StringTokenizer st = new StringTokenizer(line);
-            while (st.hasMoreTokens()) {
+            while (st.hasMoreTokens())
                 prefixes.add(st.nextToken());
-            }
             line = bf.readLine();
         }
         StringBuilder sb = new StringBuilder();
@@ -46,7 +33,6 @@ public class prefix {
         for (int i = 0; i < prefixes.size(); i++)
             if (S.substring(0, prefixes.get(i).length()).equals(prefixes.get(i)))
                 dp[prefixes.get(i).length()] = true;
-
         for (int i = 0; i < S.length(); i++) {
             if (!dp[i]) continue;
             for (int j = 0; j < prefixes.size(); j++) {
