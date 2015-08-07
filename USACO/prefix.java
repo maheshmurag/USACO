@@ -17,11 +17,11 @@ public class prefix {
         input = new Scanner(new BufferedReader(new FileReader(prob + ".in")));
         PrintWriter output = new PrintWriter(new File(prob + ".out"));
         String s = "";
-        String tmp = "";
-        do {
-            tmp = input.nextLine();
+        while(true) {
+            String tmp = input.next();
+            if(tmp.equals(".")) break;
+            s += tmp + " ";
         }
-        while (tmp.length()>76);
         int plen = s.length() - s.replaceAll(" ", "").length() + 1;
         String[] prefixes = new String[plen];
 
@@ -31,9 +31,8 @@ public class prefix {
             prefixes[i] = s.substring(c, x == -1 ? s.length() : x);
             c += (prefixes[i].length() + 1);
         }
-
-        input.next();
-        String S = input.next();
+        String S = "";
+        while(input.hasNext()) S+=input.next();
 
         boolean dp[] = new boolean[S.length() + 1];
         dp[0] = true;
