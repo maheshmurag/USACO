@@ -22,7 +22,7 @@ public class nocows {
             for (int j = 0; j < dp[0].length; j++)
                 dp[i][j] = -1;
         solve(n, h);
-        output.println(dp[n][h] % 9901);
+        output.println(dp[n][h] % 9901!=-1?dp[n][h] % 9901:0);
         output.close();
     }
 
