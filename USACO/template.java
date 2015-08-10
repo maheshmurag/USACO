@@ -12,6 +12,7 @@ public class template {
         input =new StreamTokenizer(new BufferedReader(new FileReader(prob+".in")));
         PrintWriter output=new PrintWriter(new FileWriter(prob+".out"));
 
+
         output.println();
         output.close();
 

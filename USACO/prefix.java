@@ -26,7 +26,6 @@ public class prefix {
             sb.append(line);
             line = bf.readLine();
         }
-        System.out.println("fdsa");
         String S = sb.toString();
         boolean dp[] = new boolean[S.length() + 1];
         dp[0] = true;
