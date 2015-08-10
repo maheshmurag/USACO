@@ -1,14 +1,13 @@
 import java.util.LinkedList;
-
 public class bfsattempt {
     public static void main(String[] args) {
-        //		graph = {
-        //				'1': ['2', '3', '4'],
-        //				'2': ['5', '6'],
-        //				'5': ['9', '10'],
-        //				'4': ['7', '8'],
-        //				'7': ['11', '12']
-        //		}
+        //        graph = {
+        //                '1': ['2', '3', '4'],
+        //                '2': ['5', '6'],
+        //                '5': ['9', '10'],
+        //                '4': ['7', '8'],
+        //                '7': ['11', '12']
+        //        }
         LinkedList<Node> graph = new LinkedList<Node>();
         graph.add(new Node(0));
         graph.add(new Node(1));
@@ -54,7 +53,6 @@ public class bfsattempt {
                 System.out.println(str);
                 break;
             }
-
             for (Integer a : top.adj) {
                 if (!visited[a]) {
                     queue.add(graph.get(a));
@@ -62,7 +60,6 @@ public class bfsattempt {
                     previous[a] = top.index;
                 }
             }
-
         }
     }
 }
@@ -70,7 +67,6 @@ public class bfsattempt {
 class Node {
     LinkedList<Integer> adj = new LinkedList<Integer>();
     int index = -1;
-
     public Node(int index) {
         this.index = index;
     }
