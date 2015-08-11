@@ -19,8 +19,14 @@ public class money {
         for (int i = 0; i < V; i++) {
             int x = nextInt();
             for (int j = x; j <= N; j++)
-                nways[j] += nways[j-x];
+                nways[j] += nways[j-x];//equivalent to nways[j] = nways[j] + nways[j-x]
+                            //which is ways(ignoring coin value x) + ways(using coin value x)
+                            //since you use a coin with value x, you find the stored value for # ways of j-x
+                            //similar to knapsack problem but flattened to 1d array
         }
+        System.out.println(
+                Arrays.toString(nways)
+        );
         output.println(nways[N]);
         output.close();
     }
