@@ -3,17 +3,14 @@ TASK: zerosum
 LANG: JAVA
 ID: maheshm2
  */
-
 import java.io.*;
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 public class zerosum {
     static int n;
     static ArrayList<String> s;
     static StreamTokenizer input;
-
     public static void main(String[] args) throws IOException {
         String prob = "zerosum";
         input = new StreamTokenizer(new BufferedReader(new FileReader(prob + ".in")));
