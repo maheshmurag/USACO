@@ -15,20 +15,15 @@ public class concom {
         input = new StreamTokenizer(new BufferedReader(new FileReader(prob + ".in")));
         PrintWriter output = new PrintWriter(new FileWriter(prob + ".out"));
         int[][] arr = new int[101][101];
-        int n = nextInt(), a = 0, b = 0, c = 0, max = -1;
+        int n = nextInt(), a = 0, b = 0, c = 0, max = 100;
         for (int i = 0; i < n; i++) {
             a = nextInt();
             b = nextInt();
             c = nextInt();
-            if (a > max) max = a;
-            if (b > max) max = b;
             arr[a][b] = c;
         }
-        int sum = 0;
-        max = 100;
-        ArrayList<String> out = new ArrayList<String>();
         boolean v[][] = new boolean[101][101];
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= 100; i++){
             for (int j = 1; j <= 100; j++) {
                 if (i != j && !v[i][j] && arr[i][j] > 50) {
                     v[i][j] = true;
@@ -46,7 +41,6 @@ public class concom {
                     output.println(i+" " +j);
         output.close();
     }
-
     static int nextInt() throws IOException {
         input.nextToken();
         return (int) input.nval;
