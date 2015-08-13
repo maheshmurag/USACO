@@ -25,7 +25,7 @@ public class concom {
         boolean v[][] = new boolean[101][101];
         for (int i = 1; i <= 100; i++){
             for (int j = 1; j <= 100; j++) {
-                if (i != j && !v[i][j] && arr[i][j] > 50) {//if i controls j
+                if (i != j && !v[i][j] && arr[i][j] > 50) {//if i controls j && hasn't already visited
                     v[i][j] = true;
                     for (int k = 1; k <= max; k++) {
                         arr[i][k] += arr[j][k];
