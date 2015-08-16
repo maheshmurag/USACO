@@ -15,8 +15,9 @@ public class MaxSumContiguousSubsequence {
         int start = 0;
         M[0] = arr[0];
         for (int i = 1; i < arr.length; i++) {
-            M[i] = Math.max(arr[i], M[i - 1] + arr[i]);
-            start = (M[i - 1] > 0) ? start : i;
+            M[i] = Math.max(arr[i], M[i - 1] + arr[i]);//dp: M[i] has max contiguous sum ending at index i
+            start = (M[i - 1] > 0) ? start : i;//if adding arr[i] to subseq makes the max sum bigger, then expand window to include i
+            //else if adding arr[i] to the left index's max sum makes it smaller, then ignore it and restart the window at index i
         }
         int max = Integer.MIN_VALUE;
         int end = 0;
