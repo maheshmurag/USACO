@@ -9,40 +9,26 @@ class farida {
     public static void main(String[] args) throws java.lang.Exception {
         Scanner sc = new Scanner(System.in);
         String out = "";
-        int n = sc.nextInt();
+        long n = sc.nextLong();
         for (int i = 0; i < n; i++) {
-            int m = sc.nextInt();
-
-            if(m==0){
-                sc.next();
+            long m = sc.nextLong();
+            if (m == 0) {
+                sc.nextLine();
+                out += "Case " + (i + 1) + ": " + 0 + "\n";
                 continue;
             }
-
-            int[] arr = new int[m];
-            boolean[] taken = new boolean[m];
-            int vals[] = new int[m];
-            for (int j = 0; j < m; j++) {
-                arr[j] = sc.nextInt();
+            long[] arr = new long[(int)m];
+            for (int j = 0; j < m; j++)
+                arr[j] = sc.nextLong();
+            for (int j = arr.length - 1; j >= 0; j--) {
+                long a1 = arr[j], a2 = 0;
+                if (j + 2 < arr.length)
+                    a1 += arr[j + 2];
+                if (j + 1 < arr.length)
+                    a2 = arr[j + 1];
+                arr[j] = Math.max(a1, a2);
             }
-
-            //try taking j & not taking j
-            //1 2 3 4 5
-            //if 1 is taken, vals[0] = 1
-            //if j-1 is taken, vals[j] = vals[j-1]
-            //else
-            //vals[j] = vals[j-2] + arr[j]
-            taken[0] = true;
-            vals[0] = arr[0];
-            for (int j = 1; j < m; j++) {
-                    if (taken[j - 1]) {
-                        arr[j] = arr[j - 1];
-                        taken[j] = false;
-                    } else {
-                        arr[j] = Math.max(arr[j], arr[j - 2] + arr[j]);
-                        taken[j] = true;
-                    }
-            }
-            out += vals[vals.length - 1] + "\n";
+            out += "Case " + (i + 1) + ": " + arr[0] + "\n";
         }
         System.out.print(out);
     }
