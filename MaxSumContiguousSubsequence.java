@@ -3,25 +3,30 @@ import java.util.Arrays;
 
 public class MaxSumContiguousSubsequence {
     public static void main(String[] args) throws java.io.IOException {
-        int[] A = {-2, 11, -4, 13, -5, 2};
-//        int [] A = {-15, 29, -36, 3, -22, 11, 19, -5};
+//        int[] A = {-2, 11, -4, 13, -5, 2};// = 20
+        int [] A = {-15, 29, -36, 3, -22, 11, 19, -5};// = 30
         //http://karmaandcoding.blogspot.com/2012/02/dynamic-programming-maximum-value.html
         //http://people.cs.clemson.edu/~bcdean/dp_practice/dp_1.swf
         System.out.println(ans(A));
     }
 
     public static int ans(int[] arr) {
-        int start = 0, end, sum = arr[0], max = -1;
+        int[] M = new int[arr.length];
+        int start = 0;
+        M[0] = arr[0];
         for (int i = 1; i < arr.length; i++) {
-            //choice: include i or don't include i or start a new contiguous place
-            if (arr[i] + sum > sum) {
-                sum += arr[i];
-            } else {
-                if (sum > max)
-                    max = sum;
-                sum = arr[i];
+            M[i] = Math.max(arr[i], M[i - 1] + arr[i]);
+            start = (M[i - 1] > 0) ? start : i;
+        }
+        int max = Integer.MIN_VALUE;
+        int end = 0;
+        for (int i = 0; i < M.length; i++) {
+            if(M[i] > max) {
+                max = M[i];
+                end = i;
             }
         }
-        return sum;
+        System.out.println("max ranges from index " + start + " to " + end);
+        return max;
     }
 }
