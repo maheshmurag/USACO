@@ -17,7 +17,9 @@ public class MaxChange {
             int min = Integer.MAX_VALUE;
             for (int j = 0; j < ar.length && ar[j] <= i; j++)
                 if(i-ar[j] >= 0 && dp[i-ar[j]] < min)
-                    min = dp[i-ar[j]];
+                    min = dp[i-ar[j]];//by finding min num for i-ar[j], you can add the jth coin to get the value i
+            //ex: dp[63-25] = dp[38] --> min coins to get 38, + a 25 coin = 63
+            //subproblems = MinCoins[i] is minimum number of coins to get to value i
             dp[i] = min + 1;
         }
         return dp[W];
