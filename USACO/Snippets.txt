@@ -1,0 +1,91 @@
+Dijkstra's
+
+static int dijkstra(int source, int goal) {
+    ArrayList<Integer> nodes = new ArrayList<Integer>();//replace with PriorityQueue<Integer> for priority-queue dijkstra
+    int[] d = new int[n + 1];
+    Arrays.fill(d, Integer.MAX_VALUE);
+    d[source] = 0;
+    while (nodes.size() != n) {
+        int closest = goal;
+        for (int i = 1; i <= n; i++) {
+            if (d[i] < d[closest] && !nodes.contains(i)) {
+                closest = i;
+            }
+        }
+        nodes.add(closest);
+        for (int i = 1; i <= n; i++)
+            if (matrix[closest][i] != 0 && !nodes.contains(i)) {
+                if (d[closest] + matrix[closest][i] < d[i]) {
+                    d[i] = matrix[closest][i] + d[closest];
+                }
+            }
+    }
+    return d[goal];
+}
+
+------------------------------------------------------------------------------------------------------------------------
+Print 2D Array
+static void print2Arr(int[][] arr) {
+    for (int i = 0; i < arr.length; i++) {
+        for (int j = 0; j < arr.length; j++) {
+            System.out.print(arr[i][j] + " ");
+        }
+        System.out.println();
+    }
+}
+------------------------------------------------------------------------------------------------------------------------
+BFS
+
+void bfs(Node source, Node goal){
+    LinkedList<Node> queue = new LinkedList<Node>();
+    queue.push(source));
+    boolean visited[] = new boolean[n+1];
+    int previous[] = new int[n+1];
+    while (!queue.isEmpty()) {
+        Node top = queue.getFirst();
+        queue.removeFirst();
+        if (top.index == goal) {
+            //found goal
+        }
+        for (Integer a : top.adj) {
+            if (!visited[a]) {
+                queue.add(graph.get(a));
+                visited[a] = true;
+                previous[a] = top.index;
+            }
+        }
+    }
+}
+------------------------------------------------------------------------------------------------------------------------
+DFS (iterative)
+
+void dfs(Node source, Node goal){
+    Stack<Node> queue = new Stack<Node>();
+    queue.push(source));
+    boolean visited[] = new boolean[n+1];
+    int previous[] = new int[n+1];
+    while (!queue.isEmpty()) {
+        Node top = queue.getFirst();
+        queue.removeFirst();
+        if (top.index == goal) {
+            //found goal
+        }
+        for (Integer a : top.adj) {
+            if (!visited[a]) {
+                queue.add(graph.get(a));
+                visited[a] = true;
+                previous[a] = top.index;
+            }
+        }
+    }
+}
+------------------------------------------------------------------------------------------------------------------------
+DFS (recursive) - figure it out
+
+void dfs(params)
+{
+    //base case
+        return;
+    dfs(updated params);
+}
+------------------------------------------------------------------------------------------------------------------------
